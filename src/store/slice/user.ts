@@ -5,6 +5,7 @@ interface User {
     email: string;
     token: string;
     first_name: string;
+    password: string;
     last_name: string;
     foreign_lang: string;
 }
@@ -12,6 +13,7 @@ interface User {
 const initialState: User = {
     token: '',
     email: '',
+    password: '',
     first_name: '',
     last_name: '',
     foreign_lang: '',
@@ -21,17 +23,22 @@ export const userStore = createSlice({
   name: 'userStore',
   initialState,
   reducers: {
-    updateUserName: (state, action: PayloadAction<string>) => {
-      state.first_name = action.payload;
+    updateCredentials: (state, action: PayloadAction<{ email?: User['email'], password?: User['password'] }>) => {
+      return { ...state, ...action.payload };
     },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
       userAuthApi.endpoints.userLogin.matchFulfilled,
       (state, { payload }) => {
-        state.email = payload.user.email;
         state.first_name = payload.user.first_name;
         state.last_name = payload.user.last_name;
+      }
+    )
+    builder.addMatcher(
+      userAuthApi.endpoints.userLogin.matchRejected,
+      () => {
+        return initialState;
       }
     )
     builder.addMatcher(
@@ -45,4 +52,4 @@ export const userStore = createSlice({
   }
 });
 
-export const { updateUserName } = userStore.actions;
+export const { updateCredentials } = userStore.actions;
