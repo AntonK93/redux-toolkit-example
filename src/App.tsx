@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { userAuthApi } from "./store/api/userAuthApi";
@@ -17,7 +17,6 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <div className="wrapper">
           <div className="login-container">
-             <form onSubmit={(e) => { e.preventDefault(); apiCallUserLogin({ email: userStore.email, password: userStore.password })}}>
                 <label htmlFor="username">Username:</label>
                 <input
                     type="text"
@@ -36,8 +35,7 @@ function App() {
                     onChange={(e) => dispatch(updateCredentials({ password: e.target.value }))}
                     required
                 />
-                <input type="submit" value="Login" />
-            </form>
+                <input type="submit" value="Login" onClick={() => apiCallUserLogin({ email: userStore.email, password: userStore.password })} />
           </div>
 
         </div>
