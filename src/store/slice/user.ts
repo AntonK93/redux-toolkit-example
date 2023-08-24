@@ -49,6 +49,9 @@ export const userStore = createSlice({
         state.last_name = payload.user.last_name;
       }
     )
+    //builder.addCase('myOtherSlice/someAction', (state, { payload }) => {
+    //state.token = payload.token;
+    //});
   }
 });
 
